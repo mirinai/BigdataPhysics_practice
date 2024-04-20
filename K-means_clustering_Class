@@ -1,0 +1,46 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+class KMeans:
+    def __init__(self, k=3, max_iterations=100):
+        # 초기화 메서드
+        # k: 클러스터의 수
+        # max_iterations: 알고리즘이 수렴하지 않을 경우를 대비해 최대 반복 횟수 설정
+        self.k = k
+        self.max_iterations = max_iterations
+    
+    def fit(self, data):
+        # 데이터에 대해 K-평균 클러스터링을 실행하는 메서드
+        # 처음에 랜덤하게 k개의 데이터 포인트를 중심점으로 선택
+        self.centroids = data[np.random.choice(len(data), self.k, replace=False)]
+        for _ in range(self.max_iterations):
+            # 각 데이터 포인트에 가장 가까운 중심점 찾기
+            self.labels = [self._closest_centroid(point) for point in data]
+            # 새로운 중심점을 계산하기 위해 각 클러스터의 평균 위치를 취함
+            new_centroids = [np.mean(data[np.array(self.labels) == i], axis=0) for i in range(self.k)]
+            # 중심점이 변하지 않으면 반복을 중단
+            if np.all(self.centroids == new_centroids):
+                break
+            self.centroids = new_centroids
+    
+    def _closest_centroid(self, point):
+        # 주어진 데이터 포인트에 가장 가까운 중심점을 찾는 내부 메서드
+        # 각 중심점과의 유클리드 거리를 계산
+        distances = np.linalg.norm(point - self.centroids, axis=1)
+        return np.argmin(distances)
+
+    def predict(self, data):
+        # 새로운 데이터 포인트에 대해 가장 가까운 클러스터의 인덱스를 예측하는 메서드
+        return [self._closest_centroid(point) for point in data]
+
+# 데이터 생성
+data = np.random.rand(100, 2)  # 100개의 2차원 데이터 포인트를 무작위로 생성
+
+# KMeans 인스턴스 생성 및 학습
+kmeans = KMeans(k=3)
+kmeans.fit(data)
+
+# 시각화
+plt.scatter(data[:, 0], data[:, 1], c=kmeans.labels, cmap='viridis')  # 데이터 포인트를 클러스터에 따라 색칠
+plt.scatter(kmeans.centroids[:, 0], kmeans.centroids[:, 1], c='red', marker='*', s=200)  # 중심점을 빨간 별로 표시
+plt.show()
