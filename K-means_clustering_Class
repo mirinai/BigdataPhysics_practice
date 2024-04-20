@@ -44,3 +44,16 @@ kmeans.fit(data)
 plt.scatter(data[:, 0], data[:, 1], c=kmeans.labels, cmap='viridis')  # 데이터 포인트를 클러스터에 따라 색칠
 plt.scatter(kmeans.centroids[:, 0], kmeans.centroids[:, 1], c='red', marker='*', s=200)  # 중심점을 빨간 별로 표시
 plt.show()
+
+
+# 새로운 데이터 포인트 생성
+new_data = np.random.rand(10, 2)  # 10개의 새로운 2차원 데이터 포인트
+
+# 학습된 모델을 사용하여 새 데이터의 클러스터를 예측
+predicted_clusters = kmeans.predict(new_data)
+
+# 새 데이터와 그에 해당하는 클러스터 시각화
+plt.scatter(data[:, 0], data[:, 1], c=kmeans.labels, cmap='viridis')  # 기존 데이터 포인트
+plt.scatter(new_data[:, 0], new_data[:, 1], c=predicted_clusters, cmap='viridis', edgecolor='black')  # 새 데이터 포인트
+plt.scatter(kmeans.centroids[:, 0], kmeans.centroids[:, 1], c='red', marker='*', s=200)  # 중심점
+plt.show()
