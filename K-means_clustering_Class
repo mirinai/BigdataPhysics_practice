@@ -42,7 +42,7 @@ kmeans = KMeans(k=3)
 kmeans.fit(data)
 
 # 시각화
-plt.scatter(data[:, 0], data[:, 1], c=kmeans.labels, cmap='viridis')  # 데이터 포인트를 클러스터에 따라 색칠
+'''plt.scatter(data[:, 0], data[:, 1], c=kmeans.labels, cmap='viridis')  # 데이터 포인트를 클러스터에 따라 색칠
 plt.scatter(kmeans.centroids[:, 0], kmeans.centroids[:, 1], c='red', marker='*', s=200)  # 중심점을 빨간 별로 표시
 plt.show()
 
@@ -57,4 +57,25 @@ predicted_clusters = kmeans.predict(new_data)
 plt.scatter(data[:, 0], data[:, 1], c=kmeans.labels, cmap='viridis')  # 기존 데이터 포인트
 plt.scatter(new_data[:, 0], new_data[:, 1], c=predicted_clusters, cmap='viridis', edgecolor='black')  # 새 데이터 포인트
 plt.scatter(kmeans.centroids[:, 0], kmeans.centroids[:, 1], c='red', marker='*', s=200)  # 중심점
+plt.show()'''
+
+# 첫 번째 그래프 생성
+plt.figure()  # 새로운 창 생성
+plt.scatter(data[:, 0], data[:, 1], c=kmeans.labels, cmap='viridis')
+plt.scatter(kmeans.centroids[:, 0], kmeans.centroids[:, 1], c='red', marker='*', s=200)
+plt.title("Initial Clustering")
+
+# 새로운 데이터 포인트 생성
+new_data = np.random.rand(10, 2)
+
+# 학습된 모델을 사용하여 새 데이터의 클러스터를 예측
+predicted_clusters = kmeans.predict(new_data)
+
+# 두 번째 그래프 생성
+plt.figure()  # 또 다른 새로운 창 생성
+plt.scatter(data[:, 0], data[:, 1], c=kmeans.labels, cmap='viridis')
+#새 데이터 포인트들에 대한 클러스터 예측 결과를 시각화할 때, 기존 데이터 포인트들과 구별하기 쉽도록 검은색 테두리(edgecolor)를 추가
+plt.scatter(new_data[:, 0], new_data[:, 1], c=predicted_clusters, cmap='viridis', edgecolor='black')
+plt.scatter(kmeans.centroids[:, 0], kmeans.centroids[:, 1], c='red', marker='*', s=200)
+plt.title("Prediction on New Data")
 plt.show()
